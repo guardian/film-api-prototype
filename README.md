@@ -1,6 +1,6 @@
-# film-api
+# Guardian Film API
 
-FIXME
+Internal proof of concept showing how we can expose our film data as a JSON API
 
 ## Prerequisites
 
@@ -16,4 +16,4 @@ To start a web server for the application, run:
 
 ## License
 
-Copyright © 2013 FIXME
+Copyright © 2013 Guardian
