@@ -17,12 +17,17 @@
 	" FROM flm_player plyr"
 	" INNER JOIN flm_role plyr_role ON (player_seq_no = plyr.seq_no)"
 	" INNER JOIN flm_role_type role_type ON (role_type.seq_no = plyr_role.role_type_seq_no)"
-	" WHERE plyr_role.film_seq_no = ?")})
+	" WHERE plyr_role.film_seq_no = ?")
+	:genres-by-film (str "SELECT name"
+		" FROM flm_genre"
+		" INNER JOIN flm_genre_to_film ON (flm_genre.seq_no = flm_genre_to_film.genre_seq_no)"
+		" WHERE flm_genre_to_film.film_seq_no = ?")})
 
 (defn read-movie-data [movie-id]
 	(let [movie-data (first (j/query film-db ["SELECT * FROM flm_film WHERE seq_no = ?" movie-id]))
-		related-players (j/query film-db [(:players-by-film queries) movie-id])]
-		(assoc movie-data :players related-players :genres [])))
+		related-players (j/query film-db [(:players-by-film queries) movie-id])
+		genres (map :name (j/query film-db [(:genres-by-film queries) movie-id]))]
+		(assoc movie-data :players related-players :genres genres)))
 
 (defroutes app-routes
   (GET "/" [] {:body {:hello "world" :db-user (env/env :r2-db-user)}})
