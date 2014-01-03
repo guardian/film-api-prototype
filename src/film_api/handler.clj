@@ -1,6 +1,5 @@
 (ns film-api.handler
-  (:use [compojure.core]
-  	[film-api.queries])
+  (:use [compojure.core])
   (:require
 	[compojure.handler :as handler]
 	[compojure.route :as route]
@@ -15,18 +14,17 @@
 	:user (env/env :r2-db-user)
 	:password (env/env :r2-db-password)})
 
-(defquery players-by-film "film_api/sql/players_by_film.sql")
 (defqueries "film_api/sql/queries.sql")
 
 (defn read-movie-data [movie-id]
 	(let [movie-data (first (film-by-pk film-db movie-id))
 		related-players (players-by-film film-db movie-id)
-		genres (map :name (j/query film-db [(:genres-by-film queries) movie-id]))]
+		genres (map :name (genres-by-film film-db movie-id))]
 		(assoc movie-data :players related-players :genres genres)))
 
 (defn read-player-data [player-id]
-	(let [player-data (first(j/query film-db ["SELECT * FROM flm_player WHERE seq_no = ?" player-id]))
-		related-films (j/query film-db [(:films-by-player queries) player-id])]
+	(let [player-data (first(player-by-pk film-db player-id))
+		related-films (films-by-player film-db player-id)]
 		(assoc player-data :filmography related-films)))
 
 (defroutes app-routes
