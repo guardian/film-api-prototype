@@ -1,6 +1,7 @@
 (defproject film-api "0.1.0-SNAPSHOT"
   :description "FIXME: write description"
-  :url "http://example.com/FIXME"
+  :license {:name "Apache 2.0"
+            :url "http://www.apache.org/licenses/LICENSE-2.0"}
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [compojure "1.1.6"]
                  [ring/ring-json "0.2.0"]
